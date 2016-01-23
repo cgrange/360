@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "parse.cpp"
 
 #define SOCKET_ERROR        -1
 #define BUFFER_SIZE         100
@@ -19,11 +20,13 @@ int  main(int argc, char* argv[])
     long nHostAddress;
     char pBuffer[BUFFER_SIZE];
     unsigned nReadAmount;
-    char strhostname[host_name_size];
+    char strHostName[host_name_size];
     int nHostPort;
-    char* path;
+    char path[1024];
     bool debug;
-    int times-to-download = 1;
+    int timesToDownload = 1;
+
+	setbuf(stdout, NULL);
 
     if(argc < 4)// idk why he changed it to 6?
 		// I think it's because of the -c count and that junk
@@ -42,7 +45,7 @@ int  main(int argc, char* argv[])
 		switch(c){
 			case 'c':
 				std::cout << optarg << std::endl;
-				times-to-download = atoi(optarg);
+				timesToDownload = atoi(optarg);
 				break;
 			case 'd':
 				debug = true;
@@ -54,7 +57,7 @@ int  main(int argc, char* argv[])
 	}	
 	strcpy(strHostName, argv[optind]);
 	nHostPort = atoi(argv[optind + 1]);
-	path = (char*)malloc(strlen(argv[optind + 2]));
+	strcpy(path, argv[optind + 2]);
       }
 	
 
@@ -87,15 +90,24 @@ int  main(int argc, char* argv[])
         printf("\nCould not connect to host\n");
         return 0;
     }
-    
-    char* message = "GET <insert path here> HTTP/1.0\r\nHOST: <insert host name here> \r\n\r\n";
+    int sizeOfMessage = strlen(path) + strlen(strHostName) +strlen("GET  HTTP/1.1\r\nHOST: \r\n\r\n") +1;
+    char* message = malloc(sizeOfMessage);
+    sprintf(message, "GET %s HTTP/1.1\r\nHOST: %s\r\n\r\n", path, strHostName);
     write(hSocket, message, strlen(message));
-
+    GetHeaderLines(headerLines, hSocket, );
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
-    nReadAmount=read(hSocket,pBuffer,BUFFER_SIZE);
-    printf("\nReceived \"%s\" from server\n",pBuffer);
+    int amountRead = 0;
+    while(amountRead < contentLength){
+	nReadAmount = read(hSocket, pBuffer, 1);
+	amountRead += nReadAmount;
+	if(nReadAmount > 1){
+	  cout << pBuffer;
+	}
+    }
+   
+    // printf("\nReceived \"%s\" from server\n",pBuffer);
     /* write what we received back to the server */ 
 
     printf("\nClosing socket\n");

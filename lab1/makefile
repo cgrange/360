@@ -1,5 +1,6 @@
-download: download.c
-	g++ -o download download.c
+download: download.cpp
+	g++ -o download download.cpp
+
 all: client server download
 client: client.c
 	gcc -o client client.c
