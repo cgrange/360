@@ -17,8 +17,7 @@ int  main(int argc, char* argv[])
     int hSocket;                 /* handle to socket */
     struct hostent* pHostInfo;   /* holds info about a machine */
     struct sockaddr_in Address;  /* Internet socket address stuct */
-    long nHostAddress;
-    char pBuffer[BUFFER_SIZE];
+    long nHostAddress;  
     unsigned nReadAmount;
     char strHostName[HOST_NAME_SIZE];
     int nHostPort;
@@ -59,9 +58,7 @@ int  main(int argc, char* argv[])
 	nHostPort = atoi(argv[optind + 1]);
 	strcpy(path, argv[optind + 2]);
       }
-	
-
-    printf("Making a socket\n");
+	 
     /* make a socket */
     hSocket=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 
@@ -94,18 +91,20 @@ int  main(int argc, char* argv[])
     char* message = (char*)malloc(sizeOfMessage);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST: %s\r\n\r\n", path, strHostName);
     write(hSocket, message, strlen(message));
+    free(message);
     vector <char *> headerLines;
-    int contentLength = GetHeaderLines(headerLines, hSocket, false);
+    int contentLength = GetHeaderLines(headerLines, hSocket, false, debug);
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
     
     int amountRead = 0;
     while(amountRead < contentLength){
-	nReadAmount = read(hSocket, pBuffer, 1);
+	char myBuffer[1];
+	nReadAmount = read(hSocket, myBuffer, 1);
 	amountRead += nReadAmount;
 	if(nReadAmount > 0){
-	  cout << pBuffer;
+	  cout << myBuffer[0];
 	}
     }
    

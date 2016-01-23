@@ -102,7 +102,8 @@ char *FormatHeader(char *str, const char *prefix)
 //   envformat = true when getting a request from a web client
 //   envformat = false when getting lines from a CGI program
 
-int GetHeaderLines(vector<char *> &headerLines, int skt, bool envformat)
+int GetHeaderLines(vector<char *> &headerLines, 
+		int skt, bool envformat, bool debug)
 {
     // Read the headers, look for specific ones that may change our responseCode
     char *line;
@@ -122,14 +123,14 @@ int GetHeaderLines(vector<char *> &headerLines, int skt, bool envformat)
         else
         {
             if (envformat)
-                line = FormatHeader(tline, "HTTP_");
+                line = FormatHeader(tline, "");
             else
             {
                 line = (char *)malloc((strlen(tline) + 10) * sizeof(char));
-                sprintf(line, "HTTP_%s", tline);                
+                sprintf(line, "%s", tline);                
             }
         }
-        fprintf(stderr, "Header --> [%s]\n", line);
+        //fprintf(stderr, "Header --> [%s]\n", line);
         
         headerLines.push_back(line);
         free(tline);
@@ -141,7 +142,9 @@ int GetHeaderLines(vector<char *> &headerLines, int skt, bool envformat)
     int contentLength;
     char dummy[MAX_MSG_SZ];
     for (int i = 0; i < headerLines.size(); i++) {
-      printf("[%d] %s\n",i,headerLines[i]);
+      if(debug){
+      	printf("[%d] %s\n",i,headerLines[i]);
+      }
       if(strstr(headerLines[i], "Content-Length")) {
       	sscanf(headerLines[i], "%s %d", dummy, pContentLength);
 	contentLength = *pContentLength;
