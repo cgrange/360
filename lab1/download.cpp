@@ -20,7 +20,7 @@ int  main(int argc, char* argv[])
     long nHostAddress;
     char pBuffer[BUFFER_SIZE];
     unsigned nReadAmount;
-    char strHostName[host_name_size];
+    char strHostName[HOST_NAME_SIZE];
     int nHostPort;
     char path[1024];
     bool debug;
@@ -61,7 +61,7 @@ int  main(int argc, char* argv[])
       }
 	
 
-    printf("\nMaking a socket");
+    printf("Making a socket\n");
     /* make a socket */
     hSocket=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 
@@ -81,7 +81,7 @@ int  main(int argc, char* argv[])
     Address.sin_port=htons(nHostPort);
     Address.sin_family=AF_INET;
 
-    printf("\nConnecting to %s (%X) on port %d",strHostName,nHostAddress,nHostPort);
+    //printf("\nConnecting to %s (%X) on port %d",strHostName,nHostAddress,nHostPort);
 
     /* connect to host */
     if(connect(hSocket,(struct sockaddr*)&Address,sizeof(Address)) 
@@ -91,13 +91,15 @@ int  main(int argc, char* argv[])
         return 0;
     }
     int sizeOfMessage = strlen(path) + strlen(strHostName) +strlen("GET  HTTP/1.1\r\nHOST: \r\n\r\n") +1;
-    char* message = malloc(sizeOfMessage);
+    char* message = (char*)malloc(sizeOfMessage);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST: %s\r\n\r\n", path, strHostName);
     write(hSocket, message, strlen(message));
-    GetHeaderLines(headerLines, hSocket, );
+    vector <char *> headerLines;
+    int contentLength = GetHeaderLines(headerLines, hSocket, false);
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
+    cout << "content length: " << contentLength;
     int amountRead = 0;
     while(amountRead < contentLength){
 	nReadAmount = read(hSocket, pBuffer, 1);
