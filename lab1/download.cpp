@@ -99,12 +99,12 @@ int  main(int argc, char* argv[])
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
-    cout << "content length: " << contentLength;
+    
     int amountRead = 0;
     while(amountRead < contentLength){
 	nReadAmount = read(hSocket, pBuffer, 1);
 	amountRead += nReadAmount;
-	if(nReadAmount > 1){
+	if(nReadAmount > 0){
 	  cout << pBuffer;
 	}
     }
