@@ -22,9 +22,9 @@ int  main(int argc, char* argv[])
     char strHostName[HOST_NAME_SIZE];
     int nHostPort;
     char path[1024];
-    bool debug;
+    bool debug = false;
     int timesToDownload = 1;
-
+    bool count = false;
 	setbuf(stdout, NULL);
 
     if(argc < 4)// idk why he changed it to 6?
@@ -42,9 +42,9 @@ int  main(int argc, char* argv[])
 	debug = false;
 	while ((c = getopt(argc, argv, "c:d")) != -1){
 		switch(c){
-			case 'c':
-				std::cout << optarg << std::endl;
+			case 'c':	
 				timesToDownload = atoi(optarg);
+				count = true;
 				break;
 			case 'd':
 				debug = true;
@@ -90,24 +90,39 @@ int  main(int argc, char* argv[])
     int sizeOfMessage = strlen(path) + strlen(strHostName) +strlen("GET  HTTP/1.1\r\nHOST: \r\n\r\n") +1;
     char* message = (char*)malloc(sizeOfMessage);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST: %s\r\n\r\n", path, strHostName);
-    write(hSocket, message, strlen(message));
-    free(message);
-    vector <char *> headerLines;
-    int contentLength = GetHeaderLines(headerLines, hSocket, false, debug);
+    if(count){
+	int downloads;	
+	for(int i = 0; i < timesToDownload; i++){
+	  write(hSocket, message, strlen(message)); 
+	  vector<char *> headerLines;
+	  GetHeaderLines(headerLines, hSocket, false, debug);
+	  if(strstr(headerLines[0], "OK")){
+	 	downloads++;
+	  }
+	  printf("%d pass(es) through the for loop\n", i);
+	}
+	free(message);
+	printf("succesfully downloaded the site %d times.\n", downloads);
+    }
+    else{
+    	write(hSocket, message, strlen(message));
+    	free(message);
+    	vector <char *> headerLines;
+    	int contentLength = GetHeaderLines(headerLines, hSocket, false, debug);
     /* read from socket into buffer
     ** number returned by read() and write() is the number of bytes
     ** read or written, with -1 being that an error occured */
     
-    int amountRead = 0;
-    while(amountRead < contentLength){
-	char myBuffer[1];
-	nReadAmount = read(hSocket, myBuffer, 1);
-	amountRead += nReadAmount;
-	if(nReadAmount > 0){
-	  cout << myBuffer[0];
-	}
+    	int amountRead = 0;
+    	while(amountRead < contentLength){
+	  char myBuffer[1];
+	  nReadAmount = read(hSocket, myBuffer, 1);
+	  amountRead += nReadAmount;
+	  if(nReadAmount > 0){
+	    cout << myBuffer[0];
+	  }
+    	}
     }
-   
     // printf("\nReceived \"%s\" from server\n",pBuffer);
     /* write what we received back to the server */ 
 

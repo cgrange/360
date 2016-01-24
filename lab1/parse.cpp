@@ -132,7 +132,7 @@ int GetHeaderLines(vector<char *> &headerLines,
         }
         //fprintf(stderr, "Header --> [%s]\n", line);
         
-        headerLines.push_back(line);
+        headerLines.push_back(line);	
         free(tline);
         tline = GetLine(skt);
     }
