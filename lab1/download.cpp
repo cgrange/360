@@ -91,7 +91,7 @@ int  main(int argc, char* argv[])
     char* message = (char*)malloc(sizeOfMessage);
     sprintf(message, "GET %s HTTP/1.1\r\nHOST: %s\r\n\r\n", path, strHostName);
     if(count){
-	int downloads;	
+	int downloads = 0;	
 	for(int i = 0; i < timesToDownload; i++){
 	  write(hSocket, message, strlen(message)); 
 	  vector<char *> headerLines;
