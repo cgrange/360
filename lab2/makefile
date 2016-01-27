@@ -1,12 +1,10 @@
-all: server stat joeServer
-server: server.c
-	gcc -o server server.c
+all: server stat sigint
+
+server: server.cpp
+	g++ -o server server.cpp
 
 stat: stat.cpp
 	g++ -o stat stat.cpp
-
-joeServer: joeServer.c
-	gcc -o joeServer joeServer.c
 
 sigint: sigint.cpp
 	g++ -o sigint sigint.cpp
