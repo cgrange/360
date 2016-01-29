@@ -9,3 +9,6 @@ stat: stat.cpp
 sigint: sigint.cpp
 	g++ -o sigint sigint.cpp
 
+run: server
+	./server 3300 ~/htdocs/lab2/content
+
