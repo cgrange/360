@@ -35,8 +35,6 @@ void chomp(char *line)
     }
 }
 
-// Read the line one character at a time, looking for the CR
-// You dont want to read too far, or you will mess up the content
 char * GetLine(int fds)
 {
     char tline[MAX_MSG_SZ];
@@ -46,8 +44,15 @@ char * GetLine(int fds)
     int amtread = 0;
     while((amtread = read(fds, tline + messagesize, 1)) < MAX_MSG_SZ)
     {
-        if (amtread >= 0)
+
+        if (amtread > 0)
+        {
             messagesize += amtread;
+        }
+        else if( amtread == 0 )
+        {
+            break;
+        }
         else
         {
             perror("Socket Error is:");
@@ -56,7 +61,9 @@ char * GetLine(int fds)
         }
         //fprintf(stderr,"%d[%c]", messagesize,message[messagesize-1]);
         if (tline[messagesize - 1] == '\n')
+        {
             break;
+        }
     }
     tline[messagesize] = '\0';
     chomp(tline);
@@ -65,7 +72,7 @@ char * GetLine(int fds)
     //fprintf(stderr, "GetLine: [%s]\n", line);
     return line;
 }
-    
+ 
 // Change to upper case and replace with underlines for CGI scripts
 void UpcaseAndReplaceDashWithUnderline(char *str)
 {

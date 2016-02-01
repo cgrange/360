@@ -12,3 +12,6 @@ sigint: sigint.cpp
 run: server
 	./server 3300 ~/htdocs/lab2/content
 
+run2: server
+	./server 3301 ~/htdocs/lab2/content
+

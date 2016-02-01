@@ -18,6 +18,9 @@
 
 using namespace std;
 
+string clDir = "";
+size_t npos = -1;
+
 string parse(int fd){
    vector<char*> headerLines;
    int contentLength = GetHeaderLines(headerLines, fd, false, false);
@@ -26,19 +29,19 @@ string parse(int fd){
    string firstHeader(pFirstHeader);
    free(pFirstHeader);
    string path = firstHeader.substr(firstHeader.find("/"), firstHeader.find(" HTTP/")-4);
-   cout << "path: " << path << endl;
+   cout << "original path: " << path << endl;
+   std::size_t found = path.find(clDir);
+   if (found!=npos){
+	string finalPath = path.substr(clDir.length(), path.length() - clDir.length());
+  	cout << "final path: " << finalPath << endl;
+	path = finalPath;
+   }
+   //found=str.find("needles are small",found+1,6);  
    cout << "firstHeader: " << firstHeader << endl;
    return path;
 }
 
-void serve(int fd, string argDir){ 
-//   printf("Got from browser \n%s\n", pBuffer);
-   string path = parse(fd);
-   if(path == "/favicon.ico"){
-	cout << "entered the if statement about /favicon.ico\n";
-	return;	
-   }
-   //stat junk here
+void outputPath(string argDir, string path, int fd){
    string fullPath = argDir + path;
    cout << "full path is: " << fullPath << endl;
 	char* filePath = (char*) malloc(fullPath.size()+1);
@@ -50,11 +53,11 @@ void serve(int fd, string argDir){
 	   char* canned404 = (char*) malloc(1024);
 	   char* synPath = (char*) malloc(path.size()+1);
 	   strcpy(synPath, path.c_str());
-	   sprintf(canned404,"<html><head><title>Page Not Found</title></head><body> <h1>404 page not found</h1> <br/> <br/> <p>the requested page \"%s\" could not be found.</p>	</body>	</html>", synPath);
+	   sprintf(canned404,"HTTP/1.1 404 Not Found\r\n\r\n<html><head><title>Page Not Found</title></head><body> <h1>404 page not found</h1> <br/> <br/> <p>the requested page \"%s\" could not be found.</p>	</body>	</html>", synPath);
 	   write(fd, canned404, strlen(canned404));
 	   free(canned404);
 	}
-	if(S_ISREG(filestat.st_mode)) {
+	else if(S_ISREG(filestat.st_mode)) {
 	   if(strstr(filePath, ".txt")){	
 		cout << filePath << " is a text file \n";
 		//cout << "file size = "<< filestat.st_size <<"\n";
@@ -116,7 +119,7 @@ void serve(int fd, string argDir){
 		fclose(fp);
 	   }
 	}
-	if(S_ISDIR(filestat.st_mode)) {
+	else if(S_ISDIR(filestat.st_mode)) {
 		cout << filePath << " is a directory \n";	  
 		DIR* dirp;
  		struct dirent* dp;
@@ -126,8 +129,16 @@ void serve(int fd, string argDir){
 		// for concatenation
 		string list = "";
 		while ((dp = readdir(dirp)) != NULL){   			
+		   string fileName(dp->d_name);
+		   if(fileName == "index.html"){
+			string argDir(filePath);
+			string path = "/index.html";
+			string newPath = argDir + path;
+			cout << "entered my index.html code. the path I'm giving it is: " << newPath << endl;
+			outputPath(argDir, path, fd);
+		   }
 		   char* pListItem = (char*) malloc(strlen(dp->d_name)*2+strlen(filePath)+30);
-		   sprintf(pListItem, "<a href=\"%s/%s\"><li>%s</li></a>", cPath, dp->d_name, dp->d_name);
+		   sprintf(pListItem, "<a href=\"%s/%s\"><li>%s</li></a>", filePath, dp->d_name, dp->d_name);
 		   string listItem(pListItem);
 		   free(pListItem);
 		   list += listItem;
@@ -139,18 +150,18 @@ void serve(int fd, string argDir){
 		memset(endHtml, 0, 20); 
 		sprintf(endHtml, "</ul></body></html>");		
 		char * new_str ;
-		int contentLength = path.length() + strlen(cList) + strlen(endHtml) + 200;
-		char* header = (char*) malloc(strlen(cPath)+200);
+		int contentLength = path.length() + strlen(cList) + strlen(endHtml) + 160;
+		char* header = (char*) malloc(strlen(cPath)+160);
 		sprintf(header,"<HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: %d\r\n\r\n<html><head><title>directory</title></head> <body> <h1>contents of %s</h1> <ul>", contentLength,cPath);
 		if((new_str = (char*) malloc(contentLength)) != NULL){
     		   new_str[0] = '\0';   // ensures the memory is an empty string
     		   strcat(new_str,header);
     		   strcat(new_str,cList);
 		   strcat(new_str,endHtml);
+		   write(fd,new_str,strlen(new_str));	
 		   free(header);
 		   free(cList);
 		   free(cPath);
-		   write(fd,new_str,strlen(new_str));
 		} else {
     		   printf("malloc failed!\n");
     		   // exit?
@@ -158,12 +169,19 @@ void serve(int fd, string argDir){
 		
 	}
 	free(filePath);
-   //typeOfFile(fullPath);   
-   
-  
-   //sprintf(pBuffer, "HTTP/1.1 200 OK\r\nContent-Type:%s\r\nContent-Length:%d\r\n\r\n<html>Hello</html>\n", contentType, contentLength);
-   //sprintf(pBuffer, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: 19\r\n\r\n<html>Hello</html>\n");
-   //write(fd, pBuffer, strlen(pBuffer));
+}
+
+void serve(int fd, string argDir){ 
+//   printf("Got from browser \n%s\n", pBuffer);
+   clDir = argDir; 
+   string path = parse(fd);
+   cout << "clDir = " << clDir << endl;
+   if(path == "/favicon.ico"){
+	cout << "entered the if statement about /favicon.ico\n";
+	return;	
+   }
+   //stat junk here
+   outputPath(argDir, path, fd);
 }
 
 int main(int argc, char* argv[])
