@@ -1,0 +1,209 @@
+nohup: ignoring input
+
+Starting server
+Making socket
+Binding to port 3300opened socket as fd (3) on port (3300) for stream i/o
+Server
+              sin_family        = 2
+              sin_addr.s_addr   = 0
+              sin_port          = 3300
+
+Making a listen queue of 5 elementsentered the serve function
+entered the serve function
+entered the serve function
+entered the serve function
+entered the serve function
+entered the serve function
+
+Waiting for a connection
+entered the serve function
+entered the serve function
+entered the serve function
+entered the serve function
+
+Got a connection from 674BB80 (25755)
+original path: /content2
+firstHeader: GET /content2 HTTP/1.1
+clDir = content/
+full path is: content//content2
+content//content2 is a directory 
+
+Closing the socketentered the serve function
+
+Waiting for a connection
+
+Got a connection from 674BB80 (19246)
+
+Waiting for a connection
+original path: /favicon.ico
+firstHeader: GET /favicon.ico HTTP/1.1
+clDir = content/
+entered the if statement about /favicon.ico
+
+Got a connection from 674BB80 (39866)
+
+Waiting for a connection
+original path: /content//content2/test1.html
+final path: //content2/test1.html
+firstHeader: GET /content//content2/test1.html HTTP/1.1
+clDir = content/
+full path is: content///content2/test1.html
+content///content2/test1.html is an html file 
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (37026)
+
+Waiting for a connection
+original path: /content2
+firstHeader: GET /content2 HTTP/1.1
+clDir = content/
+full path is: content//content2
+content//content2 is a directory 
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (20891)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (36249)
+
+Waiting for a connection
+original path: /content//content2/test4.jpg
+final path: //content2/test4.jpg
+firstHeader: GET /content//content2/test4.jpg HTTP/1.1
+clDir = content/
+full path is: content///content2/test4.jpg
+
+Closing the socketentered the serve function
+original path: /content//content2/test4.jpg
+final path: //content2/test4.jpg
+firstHeader: GET /content//content2/test4.jpg HTTP/1.1
+clDir = content/
+full path is: content///content2/test4.jpg
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (1326)
+
+Waiting for a connection
+original path: /content2
+firstHeader: GET /content2 HTTP/1.1
+clDir = content/
+full path is: content//content2
+content//content2 is a directory 
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (39930)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (6923)
+
+Waiting for a connection
+original path: /content//content2/test3.gif
+final path: //content2/test3.gif
+firstHeader: GET /content//content2/test3.gif HTTP/1.1
+clDir = content/
+full path is: content///content2/test3.gif
+
+Closing the socketentered the serve function
+original path: /content//content2/test3.gif
+final path: //content2/test3.gif
+firstHeader: GET /content//content2/test3.gif HTTP/1.1
+clDir = content/
+full path is: content///content2/test3.gif
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (48651)
+
+Waiting for a connection
+original path: /content2
+firstHeader: GET /content2 HTTP/1.1
+clDir = content/
+full path is: content//content2
+content//content2 is a directory 
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (44269)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (31861)
+
+Waiting for a connection
+original path: /content//content2/test2.txt
+final path: //content2/test2.txt
+firstHeader: GET /content//content2/test2.txt HTTP/1.1
+clDir = content/
+full path is: content///content2/test2.txt
+content///content2/test2.txt is a text file 
+
+Closing the socketentered the serve function
+original path: /content2
+firstHeader: GET /content2 HTTP/1.1
+clDir = content/
+full path is: content//content2
+content//content2 is a directory 
+
+Closing the socketentered the serve function
+
+Got a connection from 674BB80 (5117)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (40114)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (15547)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (14669)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (35359)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (15665)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (48183)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (3890)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (53170)
+
+Waiting for a connection
+
+Got a connection from 674BB80 (7881)
+
+Waiting for a connection
+original path: /
+firstHeader: GET / HTTP/1.1
+clDir = content/
+full path is: content//
+content// is a directory 
+entered my index.html code. the path I'm giving it is: content///index.html
+full path is: content///index.html
+content///index.html is an html file 
+
+Closing the socket
+Closing the socket
+Could not close socket
+entered the serve function
+original path: /favicon.ico
+firstHeader: GET /favicon.ico HTTP/1.1
+clDir = content/
