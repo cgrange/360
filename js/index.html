@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>City Finder</title>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&callback=initialize"></script>
+<script>
+$(document).ready(function() {
+$( "#cityfield" ).keyup(function() {
+  var url = "https://students.cs.byu.edu/~clement/CS360/ajax/getcity.cgi?q="+$("#cityfield").val();
+  $.getJSON(url,function(data) { 
+    var everything;
+    everything = "<ul>";
+    $.each(data, function(i,item) {
+      everything += "<li> "+data[i].city;
+    });
+    
+    everything += "</ul>";
+    $("#txtHint").html(everything);
+  });
+});
+
+
+$("#button").click(function(e){
+  var value = $("#cityfield").val();
+  console.log(value);
+  e.preventDefault();
+  $("#dispcity").text(value);
+
+  var myurl= "https://api.wunderground.com/api/0070dcf2ef1cef24/geolookup/conditions/q/UT/";
+  myurl += value;
+  myurl += ".json";
+  console.log(myurl);
+  $.ajax({
+    url : myurl,
+    dataType : "jsonp",
+    success : function(data) { 
+	var location = data['location']['city'];
+      	var temp_string = data['current_observation']['temperature_string'];
+      	var current_weather = data['current_observation']['weather'];
+      	var everything = "<ul>";
+      	everything += "<li>Location: "+location;
+      	everything += "<li>Temperature: "+temp_string;
+      	everything += "<li>Weather: "+current_weather;
+      	everything += "</ul>";
+      	$("#weather").html(everything);
+    }
+  });
+  var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Provo+UT&destinations=" + value + "+UT&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
+//  $.getJSON(distanceUrl, function(data){
+//	console.log(data);
+//  });
+  console.log("this is right before the ajax distance call");
+//  $.ajax({
+//    url : distanceUrl,
+//    dataType : "JSONP",
+//    success : function(data) {
+//	console.log("entered the success function");
+//	console.log(data);	
+//    } 
+//  });
+    var distanceService = new google.maps.DistanceMatrixService();
+    distanceService.getDistanceMatrix({
+        origins: ['Provo, UT'],
+        destinations: [''+ value + ', UT'],
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+	travelMode: google.maps.TravelMode.DRIVING,   
+    },
+    function (response, status) {
+        if (status !== google.maps.DistanceMatrixStatus.OK) {
+            console.log('Error:', status);
+        } else {
+            console.log(response);
+	    var destinations = response.destinationAddresses;
+	    var results = response.rows[0].elements;
+	    var distances = "<ul>";
+	    for (var j = 0; j < results.length; j++) {
+		var element = results[j];
+		var distance = element.distance.text;
+		var duration = element.duration.text; 
+		var to = destinations[j];
+		var output = "distance to " + destinations[j] + ": " + distance; 
+		console.log(output);
+		distances += "<li>" + output + "</li>"; 
+	    }
+	    distances += "</ul>";
+	    $('#distances').html(distances);
+        }
+    });
+  console.log("this is right after the ajax distance call");
+});
+// APIKEY: 0070dcf2ef1cef24
+});
+</script>
+</head>
+<body>
+<form>
+Enter A Utah City: <input type="text" id="cityfield" value=""><br>
+Suggestion: <span id="txtHint">Empty</span>
+<input id="button" type="submit" value="Submit">
+</form>
+<p>City</p>
+<textarea id="dispcity">No City</textarea>
+<p>Current Weather</p>
+<div id="weather">No weather</div>
+<div id="distances"></div>
+</body>
+</html>
