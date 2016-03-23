@@ -1,0 +1,12 @@
+nohup: ignoring input
+
+> comments@0.0.0 start /opt/bitnami/apache2/htdocs/comments
+> node ./bin/www
+
+[0mGET /? [36m304 [0m6.441 ms - -[0m
+[0mGET /javascripts/app.js [36m304 [0m1.938 ms - -[0m
+[0mGET /comments [36m304 [0m20.377 ms - -[0m
+[0mPUT /comments/56f206ab6ec292635e47f9c1/upvote [32m200 [0m18.193 ms - 81[0m
+[0mGET /? [36m304 [0m0.607 ms - -[0m
+[0mGET /javascripts/app.js [36m304 [0m0.251 ms - -[0m
+[0mGET /comments [32m200 [0m2.643 ms - 231[0m
