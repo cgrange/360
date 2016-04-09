@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>BoredBoard</title>
+
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+<!-- Latest compiled and minified bootstrap CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- jQuery flip plugin (just call $('divID').flip();) -->
+<script src="https://cdn.rawgit.com/nnattawat/flip/v1.0.19/dist/jquery.flip.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+<script src="javascripts/activities.js"></script>
+
+<!--<script src="javascripts/dynamic-load.js"></script>-->
+
+<script src="javascripts/app.js"></script>
+
+<!-- BoredBoard Stylesheet -->
+<link rel="stylesheet" type="text/css" href="stylesheets/BoredBoardStyle.css">
+
+<link rel="stylesheet" type="text/css" href="stylesheets/dynamic-style.css">
+</head>
+<body ng-app="activity" ng-controller="MainCtrl">
+   <div ng-bind-html="header" id="header-menu"></div>
+   <div ng-repeat="activity in activities">
+	<div class="col-md-4 grid"> 
+	  <div class="thumbnail back grid"><h2 class="img-title">{{activity.Title}}</h2><hr/><p>{{activity.Description}}</p></div>
+	</div>
+   </div>
+</body>
+</html>

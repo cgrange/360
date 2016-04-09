@@ -1,0 +1,16 @@
+#flip5{
+  cursor:pointer;
+}
+
+.back hr{
+  border-top: 1px solid #cbcbcb;
+}
+
+.back h2{
+  text-align:center;
+}
+
+.back p{
+  margin-left:10px;
+}
+

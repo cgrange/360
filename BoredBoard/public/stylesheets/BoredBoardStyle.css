@@ -1,0 +1,116 @@
+.jumbotron {
+  background-image:url('/images/chalkboard.jpg');
+  height: 600px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color:white;
+}
+
+.alternate-background{
+    background-color:#efefef;
+    border-bottom:1px solid #dbdbdb;
+}
+
+.heading{
+  color:white;
+  text-align:center;
+}
+
+#main-heading{
+  margin-top:120px;
+}
+
+li{
+  display:inline;
+  list-style-type: none;
+  margin-left:10px;
+  color:#dbdbdb;
+}
+
+.btn-link{
+  color:#333333;
+  font-size:20px;
+}
+
+#ellipsis-link{
+  color:white;
+}
+
+#eventsDiv{
+  background-image:url('/images/holi.png');
+  height: 530px; 
+  background-repeat: no-repeat;
+  background-size:100%; 
+}
+
+#activitiesDiv{
+  background-image:url('/images/bonfire.jpg');
+  height: 530px;
+  background-repeat: no-repeat;
+  background-size:100%; 
+  background-position:-20%;
+}
+
+#header-menu{
+  height:50px;
+  line-height:50px;
+  width:100%;
+}
+
+#header-menu li{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;      
+}
+
+#bb-symbol{
+  height:50px;
+}
+
+ul{
+  margin-bottom:0px;
+}
+
+
+.board-heading{
+  color:white;
+  text-align:center;
+  margin-top:100px;
+}
+
+.centered-cropped {
+  width: 33.3333333%;
+  height: 280px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  min-height: 1px;
+  float: left; 
+}
+
+.centered-cropped2 {
+  width: 66.6666667%;
+  height: 280px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  min-height: 1px;
+  float: left; 
+}
+
+.grid{
+  height:280px;
+  padding:0px;
+}
+
+.grid-img1{
+  height:280px;
+}
+
+.grid-img2{
+  height:280px;
+}
+
+#flip5{
+  cursor:pointer;
+}
