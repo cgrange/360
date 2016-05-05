@@ -1,6 +1,46 @@
 $(document).ready(function(){
-    $("#serialize").click(function(){
-        var myobj = {Title:$("#title").val(),Description:$("#description").val()};
+  //================== submit ============================ 
+   $("#serialize").click(function(){
+	var springTime = "false";
+	var winterTime = "false";
+	var fallTime = "false";
+	var summerTime = "false";
+	var moveOn = false;
+	var inside = "false";
+	var outside = "false";
+	if($('#winter').is(":checked")){
+		winterTime="true";
+		moveOn = true;
+	}
+	if($('#spring').is(":checked")){
+		springTime = "true";
+		moveOn = true;
+	}
+	if($('#summer').is(":checked")){
+		summerTime = "true";
+		moveOn = true;
+	}
+	if($('#fall').is(":checked")){
+		fallTime = "true";
+		moveOn = true;
+	}
+	if(!$('#indoor').is(":checked") && !$('#outdoor').is(":checked")){
+		moveOn = false;
+	}
+	else{
+		if($('#indoor').is(":checked")){
+			inside = "true";
+		}
+		else{
+			outside = "true";
+		}
+	}
+	// make sure title, cost, and description are filled out
+	if(!moveOn){
+		alert("please fill out the form entirely before trying to submit");
+		return;
+	}
+        var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val()};
         jobj = JSON.stringify(myobj);
         $("#json").text(jobj);
 	var url = "submit-activity";
@@ -15,7 +55,50 @@ $(document).ready(function(){
 	  }
 	})
     });
-    $("#getThem").click(function() {
+
+//================= CHECK/UNCHECK =======================
+	var winterRadio;
+    $('#winter').click(function(){	
+	if(winterRadio == this){
+		this.checked = false;
+		winterRadio = null;
+	}
+	else{
+		winterRadio = this;
+	}
+    });
+	var springRadio = null;
+    $('#spring').click(function(){	
+	if(springRadio == this){
+		this.checked = false;
+		springRadio = null;
+	}
+	else{
+		springRadio = this;
+	}
+    });
+	var summerRadio = null;
+    $('#summer').click(function(){	
+	if(summerRadio == this){
+		this.checked = false;
+		summerRadio = null;
+	}
+	else{
+		summerRadio = this;
+	}
+    });
+	var fallRadio = null;
+    $('#fall').click(function(){	
+	if(fallRadio == this){
+		this.checked = false;
+		fallRadio = null;
+	}
+	else{
+		fallRadio = this;
+	}
+    });
+});
+    /*$("#getThem").click(function() {
       	$.getJSON('submit-activity', function(data) {
 	        console.log(data);
 		window.location.href='dynamic-activities.html';
@@ -28,4 +111,4 @@ $(document).ready(function(){
 	        $("body").html(everything);
       	})
     });
-});
+});*/

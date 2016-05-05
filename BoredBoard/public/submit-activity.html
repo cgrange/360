@@ -10,14 +10,21 @@
 <form id="submissionForm" action="">
   <label for="title">Title (5 words or less): </label><input type="text" id="title" placeholder="Title"><br><br/>
   <!--<label for="description">description: </label>-->
-  <textarea form="submissionForm" name="description" rows="11" cols="60" id="description" placeholder="description..."></textarea><br>
-  <label for="season">Season (click all that apply): </label><input type="radio" id="winter"><input type="radio" id="spring"><input type="radio" id="summer"><input type="radio" id="fall">
+  <textarea form="submissionForm" name="description" rows="11" cols="60" id="description" placeholder="description..."></textarea><br><br/>
+  <label for="season">Season (click all that apply): </label><input type="radio" id="winter"><label>Winter</label><input type="radio" id="spring"><label>Spring</label><input type="radio" id="summer"><label>Summer</label><input type="radio" id="fall"><label>Fall</label><br/><br/>
+  <input type="radio" name="inOrOut" value="indoor" id="indoor"><label>Indoor</label><input type="radio" name="inOrOut" value="outdoor" id="outdoor"><label>Outdoor</label><br/><br/>
+  <label>Estimated Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
 </form>
 
-<button id="serialize">Serialize form values</button>
-<button id="getThem">Get Comments</button>
+<form method="post",enctype="multipart/form-data",action="/photo-upload">
+	<input type="text" name="title" placeholder="title">
+	<input type="file" name="upl">
+	<input type="submit">
+</form>
+
+<button id="serialize">Submit</button>
 <div id="json"></div>
-<div id="done"></div>
+<h4 id="done"></h4>
 <div id="comments"></div>
 </body>
 </html>

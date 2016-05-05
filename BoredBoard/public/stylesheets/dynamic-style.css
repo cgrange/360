@@ -2,6 +2,15 @@
   cursor:pointer;
 }
 
+button{
+    display: inline;
+    margin-left: 18px;
+    background-color: #1b0e21;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+}
+
 .back hr{
   border-top: 1px solid #cbcbcb;
 }
@@ -14,3 +23,37 @@
   margin-left:10px;
 }
 
+.ui-mobile .ui-page-active{
+  overflow-x: visible;
+}
+
+.move-right{
+	margin-left:8px!important;
+}
+
+.ui-radio{
+  margin-left:10px;
+  display:inline;
+}
+
+.ninja{
+  display:none;
+  text-align: center;
+}
+
+#popup{
+    display: none;
+    width: 300px;
+    height: 566px;
+    color: white;
+    padding: 50px;
+    position: absolute;
+    top: 53px;
+    z-index: 2;
+    margin-right: auto;
+    margin-left: auto;
+    left: 0px;
+    right: 0px;
+    border-radius: 10px;
+    background-color: rgb(115, 100, 118);
+}

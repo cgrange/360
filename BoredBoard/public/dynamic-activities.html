@@ -1,6 +1,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
 <title>BoredBoard</title>
 
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
@@ -25,17 +31,61 @@
 
 <script src="javascripts/app.js"></script>
 
+<link rel="stylesheet" type="text/css" href="stylesheets/dynamic-style.css">
+
 <!-- BoredBoard Stylesheet -->
 <link rel="stylesheet" type="text/css" href="stylesheets/BoredBoardStyle.css">
 
-<link rel="stylesheet" type="text/css" href="stylesheets/dynamic-style.css">
 </head>
 <body ng-app="activity" ng-controller="MainCtrl">
-   <div ng-bind-html="header" id="header-menu"></div>
-   <div ng-repeat="activity in activities">
+   <div ng-bind-html="filterHeader" id="header-menu"></div>
+  <!-- <div data-role="popup" id="myPopup" class="ui-content" style="min-width:250px;">-->
+<!--      <form method="post" action="demoform.asp">
+        <div>
+          <h3>Login information</h3>
+          <label for="usrnm" class="ui-hidden-accessible">Username:</label>
+          <input type="text" name="user" id="usrnm" placeholder="Username">
+          <label for="pswd" class="ui-hidden-accessible">Password:</label>
+          <input type="password" name="passw" id="pswd" placeholder="Password">
+          <label for="log">Keep me logged in</label>
+          <input type="checkbox" name="login" id="log" value="1" data-mini="true">
+          <input type="submit" data-inline="true" value="Log in">
+        </div>
+      </form>-->
+    <div id="popup">
+	<form>
+	  <h1 style="text-align:center">FILTERS</h1>
+	  <label for="season">Season (choose one): </label><br/><input type="radio" id="winter"><label class="move-right">Winter</label><br/><input type="radio" id="spring"><label class="move-right">Spring</label><br/><input type="radio" id="summer"><label class="move-right">Summer</label><br/><input type="radio" id="fall"><label class="move-right">Fall</label><br/><br/>
+	  <label for="inOrOut">Setting: </label><br/><input type="radio" name="inOrOut" value="indoor" id="indoor"><label class="move-right">Indoor</label><br/><input type="radio" name="inOrOut" value="outdoor" id="outdoor"><label class="move-right">Outdoor</label><br/><br/>
+	  <label>Maximum Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
+
+	<button ng-click="filterActivities()">Submit</button>
+	<button id="cancel">cancel</button>
+	</form>
+      </div>
+	<h3 class="ninja">Filtered Activities</h3>
+   <div ng-repeat="thing in filteredActivities">
 	<div class="col-md-4 grid"> 
-	  <div class="thumbnail back grid"><h2 class="img-title">{{activity.Title}}</h2><hr/><p>{{activity.Description}}</p></div>
+	  <div class="thumbnail back grid"><h2 class="img-title">{{thing.Title}}</h2><hr/><p>{{thing.Description}}</p></div>
+	</div>
+   </div><br/>
+	<div class="spacer"></div>
+	<h3 class = "ninja">All Activities</h3> 
+   <div ng-repeat="thing in activities">
+	<div class="col-md-4 grid"> 
+	  <div class="thumbnail back grid"><h2 class="img-title">{{thing.Title}}</h2><hr/><p>{{thing.Description}}</p></div>
 	</div>
    </div>
 </body>
+<script>
+$('document').ready(function(){
+  $("#filter").click(function(){
+    $('#popup').css('display','block');
+  });
+  $('#cancel').click(function(){
+	$('#popup').css('display','none');
+  });
+  $('.ui-loader').css('display','none');
+});
+</script>
 </html>
