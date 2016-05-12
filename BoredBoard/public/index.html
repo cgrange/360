@@ -11,10 +11,10 @@
 <!-- Latest compiled and minified bootstrap CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -23,7 +23,17 @@
 
 <!--<script src="javascripts/dynamic-load.js"></script>-->
 
+<!-- angular route module -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.js"></script>
+
+<!-- Angular App -->
 <script src="javascripts/app.js"></script>
+
+<!-- angular controllers -->
+<script src="javascripts/controllers/mainController.js"></script>
+
+<!-- angular directives -->
+<script src="javascripts/directives/headers.js"></script>
 
 <!-- BoredBoard Stylesheet -->
 <link rel="stylesheet" type="text/css" href="stylesheets/BoredBoardStyle.css">
@@ -31,7 +41,8 @@
 <link rel="stylesheet/less" type="text/css" href="stylesheets/BBstyle.css.less" />
 
 <body ng-app="activity" ng-controller="MainCtrl">
-   <div ng-bind-html="header" id="header-menu"></div>
+  <!--<div ng-bind-html="header" id="header-menu"></div>-->
+  <general-header></general-header>
 <div class="jumbotron">
 <div class="col-md-1"></div>
 <div id="title-background" class="col-md-4">
