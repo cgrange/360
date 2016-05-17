@@ -14,14 +14,14 @@ function(){
 		scope: {open: '='},
 		templateUrl: 'javascripts/directives/filterHeader.html',
 		link: function(scope){
-			scope.togglePopup = function(){
+			scope.showPopup = function(){
 				scope.open = !scope.open;
-				alert('in the togglePopup function');	
+				//alert('in the direcctives showPopup function');	
 			}
-		},
-		controller: function($scope){
-			alert($scope.open);
 		}
+		//controller: function($scope){
+			//alert($scope.open);
+		//}
 		//controller: 'MainCtrl'
 	};
 }); 

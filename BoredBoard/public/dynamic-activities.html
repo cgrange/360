@@ -35,6 +35,7 @@
 <!-- angular directives -->
 <script src="javascripts/directives/d1.js"></script>
 <script src="javascripts/directives/headers.js"></script>
+<script src="javascripts/directives/flippingDirective.js"></script>
 
 <link rel="stylesheet" type="text/css" href="stylesheets/dynamic-style.css">
 
@@ -43,10 +44,10 @@
 
 </head>
 <body ng-app="activity" ng-controller="MainCtrl">
-   <filter-header open="isPopupOpen"></filter-header>
+   <filter-header open="open"></filter-header>
    <!--<div ng-bind-html="filterHeader" id="header-menu"></div>-->
 	
-    <div ng-show="isPopupOpen" id="popup">
+    <div ng-show="open" id="popup">
 	<form>
 	  <h1 style="text-align:center">FILTERS</h1>
 	  <label for="season">Season (choose one): </label><br/><input type="radio" id="winter"><label class="move-right">Winter</label><br/><input type="radio" id="spring"><label class="move-right">Spring</label><br/><input type="radio" id="summer"><label class="move-right">Summer</label><br/><input type="radio" id="fall"><label class="move-right">Fall</label><br/><br/>
@@ -54,11 +55,11 @@
 	  <label>Maximum Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
 
 	<button ng-click="filterActivities()">submit</button>
-	<button id="cancel">cancel</button>
+	<button id="cancel" ng-click="showPopup()">cancel</button>
 	</form>
       </div>
 	<h3 class="ninja">Filtered Activities</h3>
-   <div class="filtered-stuff" ng-repeat="thing in filteredActivities">
+   <div class="filtered-stuff" ng-repeat="thing in filteredActivities" flipping-directive="">
 
 
 <div class="col-md-4 grid flipper">
@@ -82,12 +83,6 @@
 </body>
 <script>
 $('document').ready(function(){
-  $("#filter").click(function(){
-    $('#popup').css('display','block');
-  });
-  $('#cancel').click(function(){
-	$('#popup').css('display','none');
-  });
   $('.ui-loader').css('display','none'); 
 });
 

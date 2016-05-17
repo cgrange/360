@@ -1,5 +1,5 @@
 app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$http,$sce,$route){
-    $scope.isPopupOpen = false;
+    $scope.open = false;
     $scope.activities = [];
     $scope.getAll = function() {
       return $http.get('/submit-activity').success(function(data){
@@ -7,7 +7,7 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
       });
     };
     $scope.showPopup = function(){
-	$scope.isPopupOpen = !$scope.isPopupOpen;
+	$scope.open = !$scope.open;
     };
     $scope.getAll();
 //    $scope.togglePopup = function(){
@@ -69,6 +69,7 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 	var url = "/filtered-activities";
 
 	$.ajax({
+	  async:false,
 	  url:url,
 	  type: "POST",
 	  data: jobj,
@@ -90,6 +91,8 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		$route.reload();
 	  }
 	});
+        $('.flipper').flip();
+	$scope.open = !$scope.open;
     };
     var oldHeader = '<a href="/"><img src="/images/BB.png" id="bb-symbol" class="pull-left" alt="bored board symbol"></a>  <ul class="pull-left"><li class="btn-link btn-lg">login</li><li class="btn-link btn-lg">sign up</li></ul><ul class="pull-right"><a href="#myPopup" data-rel="popup"><li id="ilters" class="btn-link btn-lg">filters</li></a><a href="/activities.html"><li class="btn-link btn-lg">activities</li></a><a href="/events.html"><li class="btn-link btn-lg">events</li></a></ul>';
  
