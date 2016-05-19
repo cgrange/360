@@ -35,12 +35,14 @@ $(document).ready(function(){
 			outside = "true";
 		}
 	}
+	
 	// make sure title, cost, and description are filled out
 	if(!moveOn){
 		alert("please fill out the form entirely before trying to submit");
 		return;
 	}
-        var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val()};
+	//google geocoding api to get Lat and Lon and submit those as well
+        var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Address:$('#address').val(),Photo:$('#photo').val()};
         jobj = JSON.stringify(myobj);
         $("#json").text(jobj);
 	var url = "submit-activity";

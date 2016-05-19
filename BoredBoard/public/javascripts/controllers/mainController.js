@@ -84,8 +84,11 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		strResult += 'px';
 		$('.spacer').css('height', strResult);
 		for(var i = 0; i < data.length; i++){
-			$scope.filteredActivities.push(data[i]);
 			console.log(data[i]);
+			//var dist = getDist(data[i].locale);
+			//if(dist <= radius){
+			  $scope.filteredActivities.push(data[i]);
+			//}
 		}
 		console.log('just finished loading the filtered activities');
 		$route.reload();
@@ -104,5 +107,66 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
         angular.copy(data, $scope.activities);
       });
     };
+	var myLat, myLon;
+	function myLocation(){
+	  if(navigator.geolocation){
+	  	navigator.geolocation.getCurrentPosition(showPosition);
+	  }
+	  else{
+		alert('Your browser does not support geolocation');
+	  }
+	}
+
+	function showPosition(position){
+	  alert("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+	  myLat = position.coords.latitude;
+	  myLon = position.coords.longitude;
+	}
+
+    function getDist(otherLocation){    
+	myLocation();
+	
+	  var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Provo+UT&destinations=" + value + "+UT&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
+	    console.log("this is right before the ajax distance call");
+	    var distanceService = new google.maps.DistanceMatrixService();
+	    distanceService.getDistanceMatrix({
+		origins: ['' + myLat + ', ' + myLon],
+		destinations: [''+ otherLocation.lat + ', ' + otherLocation.lon],
+		unitSystem: google.maps.UnitSystem.IMPERIAL,
+		travelMode: google.maps.TravelMode.DRIVING,   
+	    },
+	    function (response, status) {
+		if (status !== google.maps.DistanceMatrixStatus.OK) {
+		    console.log('Error:', status);
+		} else {
+		    console.log(response);
+		    var destinations = response.destinationAddresses;
+		    var results = response.rows[0].elements;
+		    var distances = "<ul>";
+		    for (var j = 0; j < results.length; j++) {
+			var element = results[j];
+			var distance = element.distance.text;
+			var duration = element.duration.text; 
+			var to = destinations[j];
+			var output = "distance to " + destinations[j] + ": " + distance; 
+			console.log(output);
+			distances += "<li>" + output + "</li>"; 
+		    }
+		    distances += "</ul>";
+		    $('#distances').html(distances);
+		}
+	    });
+	  console.log("this is right after the ajax distance call");
+    };
+    /*$scope.getCoords = function() {
+	var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Provo+UT&destinations=" + value + "+UT&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
+	$.getJson(distanceUrl, function({
+	    url:distanceUrl,
+	    dataType: "jsonp",
+	    success : function(data){
+		console.log(data);
+	    }
+	});
+    }*/
   }
 ]);

@@ -45,7 +45,11 @@ var activitySchema = mongoose.Schema({ //Defines the Schema for this database
   Fall: String,
   Outdoor: String,
   Indoor: String,
-  Cost: Number
+  Cost: Number,
+  Lat: Number,
+  Lon: Number,
+  Address: String,
+  Photo: String
 });
 
 var Activity = mongoose.model('Activity', activitySchema); //Makes an object from that schema as a model

@@ -14,13 +14,15 @@
   <label for="season">Season (click all that apply): </label><input type="radio" id="winter"><label>Winter</label><input type="radio" id="spring"><label>Spring</label><input type="radio" id="summer"><label>Summer</label><input type="radio" id="fall"><label>Fall</label><br/><br/>
   <input type="radio" name="inOrOut" value="indoor" id="indoor"><label>Indoor</label><input type="radio" name="inOrOut" value="outdoor" id="outdoor"><label>Outdoor</label><br/><br/>
   <label>Estimated Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
+  <label>Address: </label><input type="text" id="address" size="50" placeholder="1650 University Ave, Provo, UT 84606"><br/><br/>
+  <label>Photo Address: </label><input type="text" size="44" id="photo"><br/><br/>
 </form>
 
-<form method="post",enctype="multipart/form-data",action="/photo-upload">
+<!--<form method="post",enctype="multipart/form-data",action="/photo-upload">
 	<input type="text" name="title" placeholder="title">
 	<input type="file" name="upl">
 	<input type="submit">
-</form>
+</form>-->
 
 <button id="serialize">Submit</button>
 <div id="json"></div>

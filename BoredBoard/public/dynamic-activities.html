@@ -63,7 +63,7 @@
 
 
 <div class="col-md-4 grid flipper">
-  <div class="front"><img class="grid-img1 col-md-12 thumbnail" src="/images/rope-swing.jpg" alt=""></div>
+  <div class="front"><img class="grid-img1 col-md-12 thumbnail" ng-src="{{thing.Photo}}" alt=""></div>
   <div class="back thumbnail"><h2 class="img-title">{{thing.Title}}</h2><hr/><p>{{thing.Description}}</p></div>
 </div>
 
@@ -74,10 +74,14 @@
    </div><br/>
 	<div class="spacer"></div>
 	<h3 class = "ninja">All Activities</h3> 
-   <div ng-repeat="thing in activities">
-	<div class="col-md-4 grid"> 
-	  <div class="thumbnail back grid"><h2 class="img-title">{{thing.Title}}</h2><hr/><p>{{thing.Description}}</p></div>
+   <div ng-repeat="thing in activities" flipping-directive="">
+	<div class="col-md-4 grid flipper">
+	  <div class="front"><img class="grid-img1 col-md-12 thumbnail" ng-src="{{thing.Photo}}" alt=""></div>
+	  <div class="back thumbnail"><h2 class="img-title">{{thing.Title}}</h2><hr/><p>{{thing.Description}}</p></div>
 	</div>
+<!--	<div class="col-md-4 grid"> 
+	  <div class="thumbnail back grid"><h2 class="img-title">{{thing.Title}}</h2><hr/><p>{{thing.Description}}</p></div>
+	</div>-->
    </div>
 
 </body>
