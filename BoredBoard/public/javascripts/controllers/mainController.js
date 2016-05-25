@@ -1,4 +1,6 @@
 app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$http,$sce,$route){
+    $scope.mylat;
+    $scope.myLng; 
     $scope.open = false;
     $scope.activities = [];
     $scope.getAll = function() {
@@ -10,9 +12,6 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 	$scope.open = !$scope.open;
     };
     $scope.getAll();
-//    $scope.togglePopup = function(){
-//	$scope.isPopupOpen = !$scope.isPopupOpen;
-//   }
     $scope.filteredActivities = []; 
     $scope.filterActivities = function() { 
 	//$('#popup').css('display','none');
@@ -82,23 +81,24 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		var result = realMult*280 + 61;
 		var strResult = result.toString();
 		strResult += 'px';
+		var radius = 30;
 		$('.spacer').css('height', strResult);
 		for(var i = 0; i < data.length; i++){
 			console.log(data[i]);
-			//var dist = getDist(data[i].locale);
-			//if(dist <= radius){
+			var dist = getDist(data[i].Lat, data[i].Lng);
+			console.log('this is outside the getDist function');
+			if(dist <= radius){
 			  $scope.filteredActivities.push(data[i]);
-			//}
+			}
 		}
 		console.log('just finished loading the filtered activities');
 		$route.reload();
 	  }
 	});
-        $('.flipper').flip();
+        //$('.flipper').flip();
 	$scope.open = !$scope.open;
     };
     var oldHeader = '<a href="/"><img src="/images/BB.png" id="bb-symbol" class="pull-left" alt="bored board symbol"></a>  <ul class="pull-left"><li class="btn-link btn-lg">login</li><li class="btn-link btn-lg">sign up</li></ul><ul class="pull-right"><a href="#myPopup" data-rel="popup"><li id="ilters" class="btn-link btn-lg">filters</li></a><a href="/activities.html"><li class="btn-link btn-lg">activities</li></a><a href="/events.html"><li class="btn-link btn-lg">events</li></a></ul>';
- 
     $scope.getFiltered = function() {
 	// get the ajax call hin here from filter.js and have the submit button
 	// in the filter page triger something in here that calls
@@ -107,56 +107,63 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
         angular.copy(data, $scope.activities);
       });
     };
-	var myLat, myLon;
 	function myLocation(){
-	  if(navigator.geolocation){
+	  //if(!$scope.mylat){
+	    if(navigator.geolocation){
 	  	navigator.geolocation.getCurrentPosition(showPosition);
-	  }
-	  else{
+	    }
+	    else{
 		alert('Your browser does not support geolocation');
-	  }
+	    }
+	  //}
 	}
 
 	function showPosition(position){
-	  alert("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
-	  myLat = position.coords.latitude;
-	  myLon = position.coords.longitude;
+	  //alert("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+	  $scope.mylat = position.coords.latitude;
+	  $scope.myLng = position.coords.longitude;
+	  $route.reload();
 	}
-
-    function getDist(otherLocation){    
+    $scope.getLocation = function(){
 	myLocation();
+    }
+    $scope.getLocation();
+
+    function getDist(lat, lng){    
+	    var distance;
 	
-	  var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Provo+UT&destinations=" + value + "+UT&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
-	    console.log("this is right before the ajax distance call");
-	    var distanceService = new google.maps.DistanceMatrixService();
-	    distanceService.getDistanceMatrix({
-		origins: ['' + myLat + ', ' + myLon],
-		destinations: [''+ otherLocation.lat + ', ' + otherLocation.lon],
-		unitSystem: google.maps.UnitSystem.IMPERIAL,
-		travelMode: google.maps.TravelMode.DRIVING,   
-	    },
-	    function (response, status) {
-		if (status !== google.maps.DistanceMatrixStatus.OK) {
-		    console.log('Error:', status);
-		} else {
-		    console.log(response);
+	    //var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + myLat + "," + myLng + "&destinations=" + lat + "," + lng + "&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
+	    //console.log(distanceUrl);
+		var origin = new google.maps.LatLng($scope.mylat, $scope.myLng);
+		var destination = new google.maps.LatLng(lat, lng);
+
+		var service = new google.maps.DistanceMatrixService();
+		service.getDistanceMatrix(
+		  {
+		    origins: [origin],
+		    destinations: [destination],
+		    travelMode: google.maps.TravelMode.DRIVING,
+		    unitSystem: google.maps.UnitSystem.IMPERIAL,
+		  }, callback);
+
+		function callback(response, status) {
+		  if (status == google.maps.DistanceMatrixStatus.OK) {
+		    var origins = response.originAddresses;
 		    var destinations = response.destinationAddresses;
-		    var results = response.rows[0].elements;
-		    var distances = "<ul>";
-		    for (var j = 0; j < results.length; j++) {
-			var element = results[j];
-			var distance = element.distance.text;
-			var duration = element.duration.text; 
-			var to = destinations[j];
-			var output = "distance to " + destinations[j] + ": " + distance; 
-			console.log(output);
-			distances += "<li>" + output + "</li>"; 
+		    for (var i = 0; i < origins.length; i++) {
+		        var results = response.rows[i].elements;
+			var element = results[0];
+			var meters = element.distance.value;
+			distance = meters/1609; //distance measured in miles
+			var duration = element.duration.text;
 		    }
-		    distances += "</ul>";
-		    $('#distances').html(distances);
+		  }
+		  else{
+			alert("the google distance matrix request failed");
+		  }
 		}
-	    });
-	  console.log("this is right after the ajax distance call");
+	    console.log("this is right after the getDist function");
+	    return distance;
     };
     /*$scope.getCoords = function() {
 	var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Provo+UT&destinations=" + value + "+UT&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";

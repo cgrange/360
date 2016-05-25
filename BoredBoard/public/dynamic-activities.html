@@ -26,6 +26,9 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.js"></script>
 
+<!-- google distance matrix api -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&callback=callback"></script>
+
 <!-- angular app -->
 <script src="javascripts/app.js"></script>
 
@@ -44,7 +47,7 @@
 
 </head>
 <body ng-app="activity" ng-controller="MainCtrl">
-   <filter-header open="open"></filter-header>
+   <filter-header mylat="mylat" open="open"></filter-header>
    <!--<div ng-bind-html="filterHeader" id="header-menu"></div>-->
 	
     <div ng-show="open" id="popup">

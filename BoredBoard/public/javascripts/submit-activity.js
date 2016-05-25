@@ -42,7 +42,22 @@ $(document).ready(function(){
 		return;
 	}
 	//google geocoding api to get Lat and Lon and submit those as well
-        var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Address:$('#address').val(),Photo:$('#photo').val()};
+	// geocoding key: AIzaSyDh_JWlyBfzOXP5F9fXIgsaEc2PsFpyf44
+	var addressStr = $('#address').val();
+	addressStr = addressStr.replace(/\s+/g, '+');
+	var geoCodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressStr + "&key=AIzaSyDh_JWlyBfzOXP5F9fXIgsaEc2PsFpyf44";	
+	var lat, lng;
+	$.ajax({
+	  url:geoCodeUrl,
+	  type:"GET",
+	  async:false,
+	  success: function(data, textStatus){
+		console.log(data);
+		lat = data.results[0].geometry.location.lat;
+		lng = data.results[0].geometry.location.lng;
+	  }
+	});
+        var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Lat:lat,Lng:lng,Address:$('#address').val(),Photo:$('#photo').val()};
         jobj = JSON.stringify(myobj);
         $("#json").text(jobj);
 	var url = "submit-activity";

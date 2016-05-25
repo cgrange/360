@@ -47,7 +47,7 @@ var activitySchema = mongoose.Schema({ //Defines the Schema for this database
   Indoor: String,
   Cost: Number,
   Lat: Number,
-  Lon: Number,
+  Lng: Number,
   Address: String,
   Photo: String
 });
