@@ -4,10 +4,40 @@
   <title>Activity Submission</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="javascripts/submit-activity.js"></script>
-</head>
 
-<body>
-<form id="submissionForm" action="">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+
+<!-- Latest compiled and minified bootstrap CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- angular code -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+<script src="javascripts/activities.js"></script>
+
+<!--<script src="javascripts/dynamic-load.js"></script>-->
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.js"></script>
+
+<!-- angular app -->
+<script src="javascripts/app.js"></script>
+
+<!-- angular directives -->
+<script src="javascripts/directives/d1.js"></script>
+<script src="javascripts/directives/headers.js"></script>
+<script src="javascripts/directives/flippingDirective.js"></script>
+
+<!-- BoredBoard Stylesheet -->
+<link rel="stylesheet" type="text/css" href="stylesheets/BoredBoardStyle.css">
+
+</head>
+<body ng-app="activity" >
+<general-header></general-header>
+
+<form id="submissionForm" action="" style="margin-left:50px">
   <label for="title">Title (5 words or less): </label><input type="text" id="title" placeholder="Title"><br><br/>
   <!--<label for="description">description: </label>-->
   <textarea form="submissionForm" name="description" rows="11" cols="60" id="description" placeholder="description..."></textarea><br><br/>
@@ -24,7 +54,7 @@
 	<input type="submit">
 </form>-->
 
-<button id="serialize">Submit</button>
+<button id="serialize" style="margin-left:50px">Submit</button>
 <div id="json"></div>
 <h4 id="done"></h4>
 <div id="comments"></div>

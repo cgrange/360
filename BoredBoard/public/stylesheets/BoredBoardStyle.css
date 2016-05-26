@@ -61,6 +61,9 @@ ul{
   margin-bottom:0px;
 }
 
+.flipper{
+  cursor:pointer;
+}
 
 .board-heading{
   color:white;
@@ -105,6 +108,21 @@ ul{
   cursor:pointer;
 }
 
+.filter-info{
+    position: absolute;
+    bottom: 5px;
+    width: 98%;
+}
+
+.filter-info hr{
+  margin-bottom:7px;
+  margin-top:7px;
+}
+
+.filter-info p{
+  margin-bottom:5px;
+  margin-top:0px;
+}
 
 /* ========================== HOMEPAGE STYLING ========================= */
 #title-background{
@@ -162,7 +180,6 @@ ul{
     font-weight: 600;
     top: 113px;
 }
-}
 
 #homepage #activitiesDiv h1{
     position: absolute;
@@ -210,11 +227,8 @@ ul{
 }
 
 @media screen and (min-width: 768px){
-.jumbotron .h1, .jumbotron h1 {
-    font-size: 55px;
-}
+	.jumbotron .h1, .jumbotron h1 {
+	    font-size: 55px;
+	}
 }
 
-{
-
-}

@@ -4,6 +4,10 @@
 <head>
 <title>BoredBoard</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>BoredBoard</title>
+
 <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
 
 <!-- Latest compiled and minified bootstrap CSS -->
@@ -15,16 +19,37 @@
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+<!-- angular code -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+<script src="javascripts/activities.js"></script>
+
+<!--<script src="javascripts/dynamic-load.js"></script>-->
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.js"></script>
+
+<!-- google distance matrix api -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&callback=callback"></script>
+
+<!-- angular app -->
+<script src="javascripts/app.js"></script>
+
+<!-- angular controllers -->
+<script src="javascripts/controllers/mainController.js"></script>
+
+<!-- angular directives -->
+<script src="javascripts/directives/d1.js"></script>
+<script src="javascripts/directives/headers.js"></script>
+<script src="javascripts/directives/flippingDirective.js"></script>
+
+<link rel="stylesheet" type="text/css" href="stylesheets/dynamic-style.css">
+
 <!-- BoredBoard Stylesheet -->
 <link rel="stylesheet" type="text/css" href="stylesheets/BoredBoardStyle.css">
-</head>
 
-<body>
-<div id="header-menu">
-  <a href="/"><img src="/images/BB.png" id="bb-symbol" class="pull-left" alt="bored board symbol"></a>
-  <ul class="pull-left"><li class="btn-link btn-lg">login</li><li class="btn-link btn-lg">sign up</li></ul>
-  <ul class="pull-right"><a href="/activities.html"><li class="btn-link btn-lg">activities</li></a><a href="/events.html"><li class="btn-link btn-lg">events</li></a></ul>
-</div>
-<h1>EVENTS</h1>
+</head>
+<body ng-app="activity" >
+<general-header></general-header>
+<h1 style="text-align:center;">EVENTS SECTION COMING SOON!</h1>
 </body>
 </html>

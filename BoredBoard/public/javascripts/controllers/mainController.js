@@ -75,7 +75,6 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 	  contentType: "application/json; charset=utf-8",
 	  success: function(data,textStatus) {
 		$('.ninja').css('display', 'block');
-		//console.log(data[0]); 
 		var mult = data.length/3;
 		var realMult = Math.ceil(mult);
 		var result = realMult*280 + 61;
@@ -85,17 +84,10 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		$('.spacer').css('height', strResult);
 		for(var i = 0; i < data.length; i++){
 			console.log(data[i]);
-			var dist = getDist(data[i].Lat, data[i].Lng);
-			console.log('this is outside the getDist function');
-			if(dist <= radius){
-			  $scope.filteredActivities.push(data[i]);
-			}
+			checkDist(data[i].Lat, data[i].Lng, data[i]);
 		}
-		console.log('just finished loading the filtered activities');
-		$route.reload();
 	  }
 	});
-        //$('.flipper').flip();
 	$scope.open = !$scope.open;
     };
     var oldHeader = '<a href="/"><img src="/images/BB.png" id="bb-symbol" class="pull-left" alt="bored board symbol"></a>  <ul class="pull-left"><li class="btn-link btn-lg">login</li><li class="btn-link btn-lg">sign up</li></ul><ul class="pull-right"><a href="#myPopup" data-rel="popup"><li id="ilters" class="btn-link btn-lg">filters</li></a><a href="/activities.html"><li class="btn-link btn-lg">activities</li></a><a href="/events.html"><li class="btn-link btn-lg">events</li></a></ul>';
@@ -129,7 +121,7 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
     }
     $scope.getLocation();
 
-    function getDist(lat, lng){    
+    function checkDist(lat, lng, data){    
 	    var distance;
 	
 	    //var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + myLat + "," + myLng + "&destinations=" + lat + "," + lng + "&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
@@ -148,32 +140,88 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 
 		function callback(response, status) {
 		  if (status == google.maps.DistanceMatrixStatus.OK) {
-		    var origins = response.originAddresses;
-		    var destinations = response.destinationAddresses;
-		    for (var i = 0; i < origins.length; i++) {
-		        var results = response.rows[i].elements;
+		    //var origins = response.originAddresses;
+		    //var destinations = response.destinationAddresses;
+		    //for (var i = 0; i < origins.length; i++) {
+		        var results = response.rows[0].elements;
 			var element = results[0];
 			var meters = element.distance.value;
 			distance = meters/1609; //distance measured in miles
-			var duration = element.duration.text;
-		    }
+			console.log('the callback is over');
+			//var duration = element.duration.text;
+			var radius = 30;
+			if(distance <= radius){
+			  $scope.filteredActivities.push(data);
+			}
+		        $route.reload();
+		    //return distance;
+		    //}
 		  }
 		  else{
-			alert("the google distance matrix request failed");
+			console.log("the google distance matrix request failed");
 		  }
 		}
-	    console.log("this is right after the getDist function");
-	    return distance;
     };
-    /*$scope.getCoords = function() {
-	var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Provo+UT&destinations=" + value + "+UT&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
-	$.getJson(distanceUrl, function({
-	    url:distanceUrl,
-	    dataType: "jsonp",
-	    success : function(data){
-		console.log(data);
-	    }
-	});
-    }*/
+//================= CHECK/UNCHECK =======================
+	var winterRadio;
+    $('#winter').click(function(){	
+	if(winterRadio == this){
+		this.checked = false;
+		winterRadio = null;
+	}
+	else{
+		winterRadio = this;
+	}
+    });
+	var springRadio = null;
+    $('#spring').click(function(){	
+	if(springRadio == this){
+		this.checked = false;
+		springRadio = null;
+	}
+	else{
+		springRadio = this;
+	}
+    });
+	var summerRadio = null;
+    $('#summer').click(function(){	
+	if(summerRadio == this){
+		this.checked = false;
+		summerRadio = null;
+	}
+	else{
+		summerRadio = this;
+	}
+    });
+	var fallRadio = null;
+    $('#fall').click(function(){	
+	if(fallRadio == this){
+		this.checked = false;
+		fallRadio = null;
+	}
+	else{
+		fallRadio = this;
+	}
+    });
+	var indoorRadio = null;
+    $('#indoor').click(function(){	
+	if(indoorRadio == this){
+		this.checked = false;
+		indoorRadio = null;
+	}
+	else{
+		indoorRadio = this;
+	}
+    });
+	var outdoorRadio = null;
+    $('#outdoor').click(function(){	
+	if(outdoorRadio == this){
+		this.checked = false;
+		outdoorRadio = null;
+	}
+	else{
+		outdoorRadio = this;
+	}
+    });
   }
 ]);
