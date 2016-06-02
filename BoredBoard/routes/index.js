@@ -1,51 +1,7 @@
 var express = require('express');
 var router = express.Router();
-//var multer = require('multer');
-//var multipart = require('connect-multiparty');
-//var multipartMiddleware = multipart();
+var fs = require('fs-extra');       //File System - for file manipulation
 
-//var express = require('express')
-var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
-
-//var appy = express()
-
-router.post('/upload', upload.single('avatar'), function (req, res, next) {
-  //console.log("the file is coming next");
-  //console.log(req.file);
-  //console.log(req);
- // console.log(res);
-  // req.file is the `avatar` file
-  // req.body will hold the text fields, if there were any
-})
-
-//router.post('/upload', multipartMiddleware, function(req, resp) {
-  //console.log(req.body, req.files);
-  // don't forget to delete all req.files when done
-//});
-
-/*
-var uploading = multer({
-  dest: __dirname + '../public/uploads/',
-});
-
-router.post('/upload', uploading.single('photo'), function(req, res){
-  console.log("in post request");
-  console.log(req);
-  console.log(req.file);
-  console.log(req.body);
-  
-});*/
-
-//var fileUpload = require('express-fileupload');
-
-//var myApp = express();
-//myApp.use(fileUpload());
-//var multer = require('multer'),
-//	bodyParser = require('body-parser'),
-//	path = require('path');
-
-//var router = express.Router();
 /* Set up mongoose in order to connect to mongo database */
 var mongoose = require('mongoose'); //Adds mongoose as a usable dependency
 
@@ -78,6 +34,26 @@ db.once('open', function() { //Lets us know when we're connected
   console.log('Connected');
 });
 
+router.post('/upload', function(req, res, next) {
+  	var fstream;
+        req.pipe(req.busboy);
+        req.busboy.on('file', function (fieldname, file, filename) {
+            console.log("Uploading: " + filename);
+	    
+            //Path where image will be uploaded
+	    var dir = __dirname;
+	    //console.log('old dir = ' + dir);
+	    var idx = dir.indexOf('routes');
+	    dir = dir.substr(0, idx);
+	    //console.log('new dir = ' + dir);
+            fstream = fs.createWriteStream(dir + 'public/images/' + filename);
+            file.pipe(fstream);
+            fstream.on('close', function () {    
+                console.log("Upload Finished of " + filename);              
+                res.redirect('back');           //where to go next
+            });
+        });
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -163,41 +139,4 @@ router.get('/submit-activity', function(req, res, next) {
 	})
 });
 
-/*router.get('/submit-pic', function(req, res, next){
-  console.log("in get pic route");
-  
-}*/
-
-/// Show files
-router.get('/uploads/:file', function (req, res){
-  file = req.params.file;
-  var img = fs.readFileSync(__dirname + "/uploads/" + file);
-  res.writeHead(200, {'Content-Type': 'image/jpg' });
-  res.end(img, 'binary');
-});
-/*
-router.post('/upload', upload.single('photo'), function(req, res, next) {
-  //do something and return data here?
-  console.log("in router.post function");
-  console.log(req.file);
-  console.log(req.body);
-  var sampleFile;
-  if(!req.file){
-    console.log('no file was uploaded');
-    res.send('no file was uploaded');
-    return;
-  }
-  sampleFile = req.file;
-  sampleFile.mv('/uploads/gandalf.jpg', function(err){
-    if(err){
-  	console.log('got some error');
-  	res.status(500).send(err);
-    }
-    else{
-  	console.log("file uploaded");
-  	res.send("file uploaded");
-    }
-  });  
-});*/
- 
 module.exports = router;

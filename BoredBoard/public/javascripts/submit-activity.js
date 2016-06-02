@@ -35,7 +35,9 @@ $(document).ready(function(){
 			outside = "true";
 		}
 	}
-	
+	if($('#address').val() == ''){
+		moveOn = false;  
+	}
 	// make sure title, cost, and description are filled out
 	if(!moveOn){
 		alert("please fill out the form entirely before trying to submit");

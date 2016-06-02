@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head>i
+  <meta charset = "UTF-8">
   <title>Activity Submission</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="javascripts/submit-activity.js"></script>
@@ -37,7 +38,7 @@
 <body ng-app="activity" >
 <general-header></general-header>
 
-<form id="submissionForm" action="" style="margin-left:50px">
+<form id="submissionForm" method="post" action="upload" enctype="multipart/form-data" style="margin-left:50px">
   <label for="title">Title (5 words or less): </label><input type="text" id="title" placeholder="Title"><br><br/>
   <!--<label for="description">description: </label>-->
   <textarea form="submissionForm" name="description" rows="11" cols="60" id="description" placeholder="description..."></textarea><br><br/>
@@ -46,6 +47,8 @@
   <label>Estimated Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
   <label>Address: </label><input type="text" id="address" size="50" placeholder="1650 University Ave, Provo, UT 84606"><br/><br/>
   <label>Photo Address: </label><input type="text" size="44" id="photo"><br/><br/>
+  <label>Photo:</label><input type="file" name="fileUploaded">
+  <input type="submit" id="serialize" style="margin-left:50px">
 </form>
 
 <!--<form method="post",enctype="multipart/form-data",action="/photo-upload">
@@ -54,7 +57,6 @@
 	<input type="submit">
 </form>-->
 
-<button id="serialize" style="margin-left:50px">Submit</button>
 <div id="json"></div>
 <h4 id="done"></h4>
 <div id="comments"></div>

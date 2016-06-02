@@ -47,7 +47,7 @@
 <div class="col-md-1"></div>
 <div id="title-background" class="col-md-4">
 <h1 class="heading" id="main-heading">BoredBoard</h1>
-<br/><h2 class="heading">Bored?<br/> <a id="ellipsis-link" href="/theBoard.html">Check out the board...</a></h2>
+<br/><h2 class="heading">Bored?<br/> <a id="ellipsis-link">Check out the board...</a></h2>
 </div>
 </div>
 <div id="homepage">
@@ -63,6 +63,13 @@
   </div>
 </a>
 </div>
+<script>
+$('#ellipsis-link').click(function(){
+    $('html, body').animate({
+        scrollTop: $($('#activitiesDiv')).offset().top
+    }, {duration:500, easing:'swing'});
+});
+</script>
 </body>
 
 </html>

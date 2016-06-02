@@ -4,12 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var fileUpload = require('express-fileupload');
+var busboy = require('connect-busboy'); //middleware for form/file upload
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+app.use(busboy());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,7 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload());
 
 app.use('/', routes);
 app.use('/users', users);
@@ -55,25 +55,6 @@ app.use(function(err, req, res, next) {
   res.render('error', {
     message: err.message,
     error: {}
-  });
-});
-
-
-app.post('/upload', function(req,res){
-  console.log("in app.post function");
-  var sampleFile;
-  if(!req.files){
-	res.send("No files were uploaded.");
-	return;
-  }
-  sampleFile = req.files.sampleFile;
-  sampleFile.mv('/uploads/gandalf.jpg', function(err){
-    if(err){
-	res.status(500).send(err);
-    }
-    else{
-     	res.send('File uploaded!');
-    }
   });
 });
 
