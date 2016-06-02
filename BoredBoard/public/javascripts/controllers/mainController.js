@@ -60,6 +60,10 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		jsonStr += '"Cost": { "$lte": ' + $('#cost').val() +' },';
 		//jsonStr += '"Cost": ' + $('#cost').val() + ',';
 	}
+	var radius = -1;
+	if($('#radius').val() != ''){
+		radius = $('#radius').val();
+	}
 	jsonStr = jsonStr.substring(0, jsonStr.length - 1);
 	jsonStr += '}';
 	console.log("jsonStr: " + jsonStr);
@@ -82,11 +86,10 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		var result = realMult*280 + 61;
 		var strResult = result.toString();
 		strResult += 'px';
-		var radius = 30;
 		$('.spacer').css('height', strResult);
 		for(var i = 0; i < data.length; i++){
 			//console.log(data[i]);
-			checkDist(data[i].Lat, data[i].Lng, data[i]);
+			checkDist(data[i], radius);
 		}
 	  },
 	  error: function(err){
@@ -127,7 +130,9 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
     }
     $scope.getLocation();
 
-    function checkDist(lat, lng, data){    
+    function checkDist(data, radius){
+		var lat = data.Lat;
+		var lng = data.Lng; 
 	    var distance;
 	
 	    //var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + myLat + "," + myLng + "&destinations=" + lat + "," + lng + "&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
@@ -155,7 +160,10 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 			distance = meters/1609; //distance measured in miles
 			//console.log('the callback is over');
 			//var duration = element.duration.text;
-			var radius = 30;
+			if(radius == -1){
+				alert('it said radius == -1');
+				radius = 30;
+			}
 			if(distance <= radius){
 			  $scope.filteredActivities.push(data);
 			}

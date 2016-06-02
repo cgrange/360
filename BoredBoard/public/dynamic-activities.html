@@ -55,7 +55,8 @@
 	  <h1 style="text-align:center">FILTERS</h1>
 	  <label for="season">Season (choose one): </label><br/><input type="radio" id="winter"><label class="move-right">Winter</label><br/><input type="radio" id="spring"><label class="move-right">Spring</label><br/><input type="radio" id="summer"><label class="move-right">Summer</label><br/><input type="radio" id="fall"><label class="move-right">Fall</label><br/><br/>
 	  <label for="inOrOut">Setting: </label><br/><input type="radio" name="inOrOut" value="indoor" id="indoor"><label class="move-right">Indoor</label><br/><input type="radio" name="inOrOut" value="outdoor" id="outdoor"><label class="move-right">Outdoor</label><br/><br/>
-	  <label>Maximum Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
+	  <label>Max Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
+	  <label>Max Distance: </label><input size = "3" maxlength="3" type="text" id="radius" placeholder="30"><br/><br/>
 	  <button ng-click="filterActivities()">submit</button>
 	  <button id="cancel" ng-click="showPopup()">cancel</button>
 	</form>
