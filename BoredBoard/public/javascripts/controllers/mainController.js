@@ -57,18 +57,20 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		}
 	}
 	if($('#cost').val() != ''){
-		jsonStr += '"Cost":' + $('#cost').val() +',';
+		jsonStr += '"Cost": { "$lte": ' + $('#cost').val() +' },';
+		//jsonStr += '"Cost": ' + $('#cost').val() + ',';
 	}
 	jsonStr = jsonStr.substring(0, jsonStr.length - 1);
 	jsonStr += '}';
-	//console.log("jsonStr: " + jsonStr);
+	console.log("jsonStr: " + jsonStr);
 	var testObj = JSON.parse(jsonStr);
         jobj = JSON.stringify(testObj);
+	console.log(jobj);
 	
 	var url = "/filtered-activities";
 
 	$.ajax({
-	  async:false,
+	  //async:false,
 	  url:url,
 	  type: "POST",
 	  data: jobj,
@@ -83,9 +85,13 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 		var radius = 30;
 		$('.spacer').css('height', strResult);
 		for(var i = 0; i < data.length; i++){
-			console.log(data[i]);
+			//console.log(data[i]);
 			checkDist(data[i].Lat, data[i].Lng, data[i]);
 		}
+	  },
+	  error: function(err){
+		alert('there was an error');
+		console.log(err);
 	  }
 	});
 	$scope.open = !$scope.open;
@@ -147,7 +153,7 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 			var element = results[0];
 			var meters = element.distance.value;
 			distance = meters/1609; //distance measured in miles
-			console.log('the callback is over');
+			//console.log('the callback is over');
 			//var duration = element.duration.text;
 			var radius = 30;
 			if(distance <= radius){

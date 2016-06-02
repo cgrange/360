@@ -1,13 +1,28 @@
 var express = require('express');
 var router = express.Router();
 //var multer = require('multer');
-var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart();
+//var multipart = require('connect-multiparty');
+//var multipartMiddleware = multipart();
 
-router.post('/upload', multipartMiddleware, function(req, resp) {
-  console.log(req.body, req.files);
+//var express = require('express')
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
+
+//var appy = express()
+
+router.post('/upload', upload.single('avatar'), function (req, res, next) {
+  //console.log("the file is coming next");
+  //console.log(req.file);
+  //console.log(req);
+ // console.log(res);
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+})
+
+//router.post('/upload', multipartMiddleware, function(req, resp) {
+  //console.log(req.body, req.files);
   // don't forget to delete all req.files when done
-});
+//});
 
 /*
 var uploading = multer({
@@ -97,31 +112,38 @@ router.get('/favicon.ico', function(req, res, next) {
 
 /*Post to Backend*/
 router.post('/submit-activity', function(req, res, next) { 
-  console.log("the next line will be the req.body in the routes/index post");
-  console.log(req.body);
+  //console.log("the next line will be the req.body in the routes/index post");
+  //console.log(req.body);
   var newactivity = new Activity(req.body); //[3]
 //  newactivity.Description = req.body.Description;
 
-  console.log("the next line will be the newActivity");
-  console.log(newactivity); //[3]
+  //console.log("the next line will be the newActivity");
+  //console.log(newactivity); //[3]
   newactivity.save(function(err, post) { //[4]
     if (err) return console.error(err);
-    console.log(post);
+    //console.log(post);
     res.sendStatus(200);
   }); 
 });
 
 /* GET filtered activities from database */
 router.post('/filtered-activities', function(req, res, next) {
+	console.log('req.body: ');
 	console.log(req.body);
-
+	//var str = JSON.parse(req.body);
+	//console.log('didnt fail yet');
+	//var newBod = req.body.replace(/['"]+/g, '');
+	//console.log(newBod);
+	//jobj = JSON.parse(str);
+	//console.log('parsed obj: ');
+	//console.log(jobj);
 	// use the req body to alter the find function and only get certain
 	// activities.
 	Activity.find(req.body, function(err,activityList) { //Calls the find() method on your database
 	// this ^ works now I need to figure out how to onlly add filters to the find method if they've been set.
 		if (err) return console.error(err); //If there's an error, print it out
 		else {
-			console.log(activityList); //Otherwise console log the comments you found
+			//console.log(activityList); //Otherwise console log the comments you found
 			res.json(activityList); //Then send them
 		  
 		}
@@ -130,11 +152,11 @@ router.post('/filtered-activities', function(req, res, next) {
 
 /* GET activities from database */
 router.get('/submit-activity', function(req, res, next) {
-	console.log("In the GET route?");
+	//console.log("In the GET route?");
 	Activity.find(function(err,activityList) { //Calls the find() method on your database
 		if (err) return console.error(err); //If there's an error, print it out
 		else {
-			console.log(activityList); //Otherwise console log the comments you found
+			//console.log(activityList); //Otherwise console log the comments you found
 			res.json(activityList); //Then send them
 		  
 		}
