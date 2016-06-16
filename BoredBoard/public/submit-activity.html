@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>i
+<head>
   <meta charset = "UTF-8">
   <title>Activity Submission</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -17,25 +17,37 @@
 <!-- angular code -->
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 
-<script src="javascripts/activities.js"></script>
+<!--<script src="javascripts/activities.js"></script>-->
 
 <!--<script src="javascripts/dynamic-load.js"></script>-->
 
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.js"></script>
 
+<!-- google's js map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuGkfqmlM4iGeraUo-wfjgfYTH9Dh_NsY&callback=initMap" async defer></script>
+
+<!-- jMap code -->
+<script src="javascripts/jMap.js" type="text/javascript"></script>
+
 <!-- angular app -->
 <script src="javascripts/app.js"></script>
+
+<!-- angular controllers -->
+<script src="javascripts/controllers/mainController.js"></script>
 
 <!-- angular directives -->
 <script src="javascripts/directives/d1.js"></script>
 <script src="javascripts/directives/headers.js"></script>
 <script src="javascripts/directives/flippingDirective.js"></script>
 
+<!-- photo location -->
+<script src="javascripts/photoLocation.js"></script>
+
 <!-- BoredBoard Stylesheet -->
 <link rel="stylesheet" type="text/css" href="stylesheets/BoredBoardStyle.css">
 
 </head>
-<body ng-app="activity" >
+<body ng-app="activity"  >
 <general-header></general-header>
 
 <form id="submissionForm" method="post" action="upload" enctype="multipart/form-data" style="margin-left:50px">
@@ -46,11 +58,12 @@
   <input type="radio" name="inOrOut" value="indoor" id="indoor"><label>Indoor</label><input type="radio" name="inOrOut" value="outdoor" id="outdoor"><label>Outdoor</label><br/><br/>
   <label>Estimated Cost Per Person: $</label><input size="3" maxlength="3" type="text" id="cost" placeholder="10"><br/><br/>
   <label>Address: </label><input type="text" id="address" size="50" placeholder="1650 University Ave, Provo, UT 84606"><br/><br/>
-  <label>Photo Address: </label><input type="text" size="44" id="photo"><br/><br/>
-  <label>Photo:</label><input type="file" name="fileUploaded">
-  <input type="submit" id="serialize" style="margin-left:50px">
+  <label id="test12">Photo Address: </label><div id="photo"></div><br/><br/>
+  <label style="display:inline;">Photo:</label><input id="fileInput" type="file" name="fileUploaded">
+  <button id="serialize" style="margin-top:20px; margin-left:20px;">submit</button>
 </form>
 
+<div id="map" style="width:500px; height:500px;"></div>
 <!--<form method="post",enctype="multipart/form-data",action="/photo-upload">
 	<input type="text" name="title" placeholder="title">
 	<input type="file" name="upl">

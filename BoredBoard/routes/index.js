@@ -34,6 +34,7 @@ db.once('open', function() { //Lets us know when we're connected
   console.log('Connected');
 });
 
+
 router.post('/upload', function(req, res, next) {
   	var fstream;
         req.pipe(req.busboy);

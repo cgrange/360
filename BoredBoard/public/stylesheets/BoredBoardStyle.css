@@ -172,6 +172,17 @@ ul{
     font-size:50px;
 }
 
+#map{
+  position:absolute;
+  right:50px;
+  top:100px;
+}
+
+.description{
+  height:113px;
+  overflow:hidden;
+}
+
 @media only screen and (max-width:619px){
 #homepage #eventsDiv h1{
     position: absolute;

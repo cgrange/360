@@ -69,7 +69,9 @@
   <div class="back thumbnail">
 	<h2 class="img-title">{{thing.Title}}</h2>
 	<hr/>
-	<p>{{thing.Description}}</p>
+	<div class="description">
+		<p>{{thing.Description}}</p>
+	</div>
 	<div class="filter-info">
 	  <hr/>
 	  <p>Address: {{thing.Address}}</p>
@@ -90,8 +92,10 @@
 	  <div class="front"><img class="grid-img1 col-md-12 thumbnail" ng-src="{{thing.Photo}}" alt=""></div>
 	  <div class="back thumbnail">
 		<h2 class="img-title">{{thing.Title}}</h2>
-		<hr/>
-		<p>{{thing.Description}}</p>
+		<hr/>	
+		<div class="description">
+			<p>{{thing.Description}}</p>
+		</div>
 	  	<div class="filter-info">
 		  <hr/>
 	  	  <p>Address: {{thing.Address}}</p>

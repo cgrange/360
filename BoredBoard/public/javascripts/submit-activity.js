@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   //================== submit ============================ 
    $("#serialize").click(function(){
 	var springTime = "false";
@@ -46,47 +47,63 @@ $(document).ready(function(){
 	//google geocoding api to get Lat and Lon and submit those as well
 	// geocoding key: AIzaSyDh_JWlyBfzOXP5F9fXIgsaEc2PsFpyf44
 	var addressStr = $('#address').val();
-	addressStr = addressStr.replace(/\s+/g, '+');
-	var geoCodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressStr + "&key=AIzaSyDh_JWlyBfzOXP5F9fXIgsaEc2PsFpyf44";	
-	var lat, lng;
-	$.ajax({
-	  url:geoCodeUrl,
-	  type:"GET",
-	  async:false,
-	  success: function(data, textStatus){
-		console.log(data);
-		lat = data.results[0].geometry.location.lat;
-		lng = data.results[0].geometry.location.lng;
-		var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Lat:lat,Lng:lng,Address:$('#address').val(),Photo:$('#photo').val()};
-		jobj = JSON.stringify(myobj);
-		$("#json").text(jobj);
-		var url = "submit-activity";
+	if(addressStr.search('lng') == -1){
+		addressStr = addressStr.replace(/\s+/g, '+');
+		var geoCodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + addressStr + "&key=AIzaSyDh_JWlyBfzOXP5F9fXIgsaEc2PsFpyf44";	
+		var lat, lng;
 		$.ajax({
-		  url:url,
-		  type: "POST",
-		  data: jobj,
-		  contentType: "application/json; charset=utf-8",
-		  success: function(data,textStatus) {
-		      $("#done").html("You're activity has been submitted!");
-		      console.log(data);
+		  url:geoCodeUrl,
+		  type:"GET",
+		  async:false,
+		  success: function(data, textStatus){
+			console.log(data);
+			lat = data.results[0].geometry.location.lat;
+			lng = data.results[0].geometry.location.lng;
+			var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Lat:lat,Lng:lng,Address:$('#address').val(),Photo:$('#photo').text()};
+			jobj = JSON.stringify(myobj);
+			$("#json").text(jobj);
+			var url = "submit-activity";
+			$.ajax({
+			  url:url,
+			  type: "POST",
+			  data: jobj,
+			  contentType: "application/json; charset=utf-8",
+			  success: function(data,textStatus) {
+			      	$("#done").html("You're activity has been submitted!");
+			      	console.log(data);
+			  	$('#submissionForm').submit();
+			  }
+			})
 		  }
-		})
-	  }
-	});
-        /*var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Lat:lat,Lng:lng,Address:$('#address').val(),Photo:$('#photo').val()};
-        jobj = JSON.stringify(myobj);
-        $("#json").text(jobj);
-	var url = "submit-activity";
-	$.ajax({
-	  url:url,
-	  type: "POST",
-	  data: jobj,
-	  contentType: "application/json; charset=utf-8",
-	  success: function(data,textStatus) {
-	      $("#done").html("You're activity has been submitted!");
-	      console.log(data);
-	  }
-	})*/
+		});
+	}else{
+	  var addressObj = JSON.parse(addressStr);
+	  var geoCodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + addressObj.lat + "," + addressObj.lng + "&key=AIzaSyDh_JWlyBfzOXP5F9fXIgsaEc2PsFpyf44";	 
+	  $.ajax({
+		url:geoCodeUrl,
+		type:"GET",
+		async:false,
+		success: function(data, textStatus){
+		  console.log(data);
+		  console.log(data.results[0].formatted_address);
+		  var myobj = {Title:$("#title").val(),Description:$("#description").val(),Winter:winterTime,Spring:springTime,Summer:summerTime,Fall:fallTime,Indoor:inside,Outdoor:outside,Cost:$('#cost').val(),Lat:addressObj.lat,Lng:addressObj.lng,Address:data.results[0].formatted_address,Photo:$('#photo').text()};
+		  jobj = JSON.stringify(myobj);
+		  $("#json").text(jobj);
+		  var url = "submit-activity";
+		  $.ajax({
+			url:url,
+			type: "POST",
+			data: jobj,
+			contentType: "application/json; charset=utf-8",
+			success: function(data,textStatus) {
+			  $("#done").html("You're activity has been submitted!");
+			  console.log(data);
+			  $('#submissionForm').submit();
+			}
+		  })
+		}
+	  });
+	}
     });
 
 //================= CHECK/UNCHECK =======================

@@ -1,11 +1,19 @@
 app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$http,$sce,$route){
+    var activityResults;
+    var noMore = false;
+    var X = 0;
     $scope.mylat;
     $scope.myLng; 
     $scope.open = false;
     $scope.activities = [];
     $scope.getAll = function() {
       return $http.get('/submit-activity').success(function(data){
-        angular.copy(data, $scope.activities);
+        activityResults=data;
+	for(var i = 0; i < 18; i++){
+	  $scope.activities.push(activityResults[i]);
+	}
+	$route.reload();
+	//angular.copy(data, $scope.activities);
       });
     };
     $scope.showPopup = function(){
@@ -81,15 +89,30 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 	  contentType: "application/json; charset=utf-8",
 	  success: function(data,textStatus) {
 		$('.ninja').css('display', 'block');
-		var mult = data.length/3;
-		var realMult = Math.ceil(mult);
-		var result = realMult*280 + 61;
-		var strResult = result.toString();
-		strResult += 'px';
-		$('.spacer').css('height', strResult);
-		for(var i = 0; i < data.length; i++){
-			//console.log(data[i]);
-			checkDist(data[i], radius);
+		activityResults = data;
+		if(data.length > 18){
+			activityResults = data;
+			var result = 8*280 + 61;
+			var strResult = result.toString();
+			strResult += 'px';
+			$('.spacer').css('height', strResult);
+			for(var i = 0; i < 18; i++){
+				//console.log(data[i]);
+				checkDist(activityResults[i], radius);
+			}
+		}
+		else{
+			noMore = true;
+			var mult = data.length/3;
+			var realMult = Math.ceil(mult);
+			var result = realMult*280 + 61;
+			var strResult = result.toString();
+			strResult += 'px';
+			$('.spacer').css('height', strResult);
+			for(var i = 0; i < data.length; i++){
+				//console.log(data[i]);
+				checkDist(data[i], radius);
+			}
 		}
 	  },
 	  error: function(err){
@@ -124,6 +147,7 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
 	  $scope.mylat = position.coords.latitude;
 	  $scope.myLng = position.coords.longitude;
 	  $route.reload();
+	  //initMap();
 	}
     $scope.getLocation = function(){
 	myLocation();
@@ -131,51 +155,76 @@ app.controller('MainCtrl', ['$scope','$http','$sce','$route', function($scope,$h
     $scope.getLocation();
 
     function checkDist(data, radius){
-		var lat = data.Lat;
-		var lng = data.Lng; 
-	    var distance;
+	var lat = data.Lat;
+	var lng = data.Lng; 
+	var distance;
 	
-	    //var distanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + myLat + "," + myLng + "&destinations=" + lat + "," + lng + "&key=AIzaSyD9LwLzWPsMzeOUCb86SURo94MdIndpmKE";
-	    //console.log(distanceUrl);
-		var origin = new google.maps.LatLng($scope.mylat, $scope.myLng);
-		var destination = new google.maps.LatLng(lat, lng);
+	var origin = new google.maps.LatLng($scope.mylat, $scope.myLng);
+	var destination = new google.maps.LatLng(lat, lng);
 
-		var service = new google.maps.DistanceMatrixService();
-		service.getDistanceMatrix(
-		  {
-		    origins: [origin],
-		    destinations: [destination],
-		    travelMode: google.maps.TravelMode.DRIVING,
-		    unitSystem: google.maps.UnitSystem.IMPERIAL,
-		  }, callback);
+	var service = new google.maps.DistanceMatrixService();
+	service.getDistanceMatrix(
+	  {
+	    origins: [origin],
+	    destinations: [destination],
+	    travelMode: google.maps.TravelMode.DRIVING,
+	    unitSystem: google.maps.UnitSystem.IMPERIAL,
+	  }, callback);
 
-		function callback(response, status) {
-		  if (status == google.maps.DistanceMatrixStatus.OK) {
-		    //var origins = response.originAddresses;
-		    //var destinations = response.destinationAddresses;
-		    //for (var i = 0; i < origins.length; i++) {
-		        var results = response.rows[0].elements;
-			var element = results[0];
-			var meters = element.distance.value;
-			distance = meters/1609; //distance measured in miles
-			//console.log('the callback is over');
-			//var duration = element.duration.text;
-			if(radius == -1){
-				alert('it said radius == -1');
-				radius = 30;
-			}
-			if(distance <= radius){
-			  $scope.filteredActivities.push(data);
-			}
-		        $route.reload();
-		    //return distance;
-		    //}
-		  }
-		  else{
-			console.log("the google distance matrix request failed");
-		  }
+	function callback(response, status) {
+	  if (status == google.maps.DistanceMatrixStatus.OK) {
+	    //var origins = response.originAddresses;
+	    //var destinations = response.destinationAddresses;
+	    //for (var i = 0; i < origins.length; i++) {
+		var results = response.rows[0].elements;
+		var element = results[0];
+		var meters = element.distance.value;
+		distance = meters/1609; //distance measured in miles
+		//console.log('the callback is over');
+		//var duration = element.duration.text;
+		if(radius == -1){
+			radius = 30;
 		}
+		if(distance <= radius){
+		  $scope.filteredActivities.push(data);
+		}
+		$route.reload();
+	    //return distance;
+	    //}
+	  }
+	  else{
+		console.log("the google distance matrix request failed");
+	  }
+	}
     };
+//================= Infinite Scroll =====================
+	
+	var win = $(window);
+	$scope.loading = false;
+	// Each time the user scrolls
+	win.scroll(function() {
+		if(noMore){return;};
+		// End of the document reached?
+		if ($(document).height() - win.height() == win.scrollTop()) {
+			X += 1;
+			$scope.loading = true;
+			var i = 18*X;
+			if(activityResults.length <= i + 17){
+			  noMore = true;
+			  for(i; i < activityResults.length; i++){
+  				$scope.activities.push(activityResults[i]);
+			  }
+			  $route.reload();
+			  $scope.loading = false;
+			}
+			else{
+			  for(i; i < i+18; i++){
+	  			$scope.activities.push(activityResults[i]);
+			  }
+			  $scope.loading = false;
+			} 
+		}
+	});
 //================= CHECK/UNCHECK =======================
 	var winterRadio;
     $('#winter').click(function(){	
